@@ -13,11 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'oracle'
           java-version: 21
+          cache: gradle
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
@@ -30,7 +31,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Check version change
+        id: version_check
+        run: |
+          git fetch origin
+          if git diff origin/main -- build.gradle | grep -q 'version'; then
+            echo "Version changed=true" >> $GITHUB_ENV
+          else
+            echo "Version changed=false" >> $GITHUB_ENV
+          fi
+
       - name: Build and publish
+        if: env.VERSION_CHANGED == 'true'
         env:
           ACTOR: ${{ secrets.ACTOR }}
           TOKEN: ${{ secrets.TOKEN }}
