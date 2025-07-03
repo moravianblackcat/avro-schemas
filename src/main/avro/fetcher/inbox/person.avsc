@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "PersonRequest",
-  "namespace": "cz.dan.avro.fetcher.outbox",
+  "namespace": "cz.dan.avro.fetcher.inbox",
   "fields": [
     {
       "name": "nationality",
