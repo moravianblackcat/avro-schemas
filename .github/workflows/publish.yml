@@ -31,18 +31,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Check version change
-        id: version_check
-        run: |
-          git fetch origin
-          if git diff origin/main -- build.gradle | grep -q 'version'; then
-            echo "Version changed=true" >> $GITHUB_ENV
-          else
-            echo "Version changed=false" >> $GITHUB_ENV
-          fi
+      - name: Run tests
 
+        run: ./gradlew test
       - name: Build and publish
-        if: env.VERSION_CHANGED == 'true'
         env:
           ACTOR: ${{ secrets.ACTOR }}
           TOKEN: ${{ secrets.TOKEN }}
