@@ -33,10 +33,14 @@
     },
     {
       "name": "dateOfBirth",
-      "type": {
-        "type": "int",
-        "logicalType": "date"
-      }
+      "type": [
+        "null",
+        {
+          "type": "int",
+          "logicalType": "date"
+        }
+      ],
+      "default": null
     }
   ]
 }
